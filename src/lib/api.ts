@@ -89,14 +89,30 @@ export const adjustSlot = async (
 };
 
 // ---------------- ADMIN LOGIN ----------------
-export const loginAdmin = async (username: string, password: string) => {
-  const res = await fetch(API_BASE + "login.php", {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ username, password }),
-  });
+export const loginUser = async (username: string, password: string) => {
+  try {
+    const res = await fetch(API_BASE + "login.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    });
 
-  return res.json();
+    if (!res.ok) {
+      throw new Error("Server error");
+    }
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.error("Login API error:", error);
+    return {
+      success: false,
+      message: "Unable to login. Please try again.",
+    };
+  }
 };
 
 
@@ -535,5 +551,92 @@ export const updateGalleryItemOrder = async (items: Array<{ id: string; display_
     headers,
     body: JSON.stringify({ items }),
   });
+  return res.json();
+};
+
+export interface JudgeSession {
+  id: string;
+  judge_name: string;
+  username: string;
+}
+
+export interface JudgeCandidate {
+  id: string;
+  full_name: string;
+  mobile: string;
+  email: string;
+  category: string;
+  audition_date: string;
+  profile_image_path?: string;
+  city?: string;
+  state?: string;
+}
+
+export interface JudgeScore {
+  id: string;
+  candidate_id: string;
+  judge_id: string;
+  candidate_name: string;
+  candidate_mobile: string;
+  candidate_email: string;
+  candidate_category: string;
+  candidate_profile_image?: string;
+  vocal_quality: number;
+  stage_presence: number;
+  song_choice: number;
+  overall_impact: number;
+  total_score: number;
+  is_locked: boolean;
+  scored_at: string;
+}
+
+export const loginJudge = async (username: string, password: string) => {
+  const res = await fetch(API_BASE + "judge/login.php", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ username, password }),
+  });
+  return res.json();
+};
+
+export const searchCandidates = async (query: string, judge_id: string) => {
+  const res = await fetch(API_BASE + `judge/search-candidates.php?query=${encodeURIComponent(query)}&judge_id=${judge_id}`);
+  return res.json();
+};
+
+export const submitJudgeScore = async (data: {
+  candidate_id: string;
+  judge_id: string;
+  vocal_quality: number;
+  stage_presence: number;
+  song_choice: number;
+  overall_impact: number;
+}) => {
+  const res = await fetch(API_BASE + "judge/submit-score.php", {
+    method: "POST",
+    headers,
+    body: JSON.stringify(data),
+  });
+  return res.json();
+};
+
+export const updateJudgeScore = async (data: {
+  score_id: string;
+  judge_id: string;
+  vocal_quality: number;
+  stage_presence: number;
+  song_choice: number;
+  overall_impact: number;
+}) => {
+  const res = await fetch(API_BASE + "judge/update-score.php", {
+    method: "POST",
+    headers,
+    body: JSON.stringify(data),
+  });
+  return res.json();
+};
+
+export const getJudgeScores = async (judge_id: string): Promise<JudgeScore[]> => {
+  const res = await fetch(API_BASE + `judge/get-scores.php?judge_id=${judge_id}`);
   return res.json();
 };

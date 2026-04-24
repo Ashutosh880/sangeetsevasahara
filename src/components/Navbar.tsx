@@ -21,7 +21,7 @@ export function Navbar() {
     faq: `${base}/faq`,
     contact: `${base}/contact`,
     payment: `${base}/payment`,
-    'admin-login': `${base}/admin-login`,
+    'login': `${base}/login`,
     'admin-dashboard': `${base}/admin-dashboard`,
     'form-management': `${base}/form-management`,
   };
@@ -34,7 +34,7 @@ export function Navbar() {
     [pageToPath.faq]: 'faq',
     [pageToPath.contact]: 'contact',
     [pageToPath.payment]: 'payment',
-    [pageToPath['admin-login']]: 'admin-login',
+    [pageToPath['login']]: 'login',
     [pageToPath['admin-dashboard']]: 'admin-dashboard',
     [pageToPath['form-management']]: 'form-management',
   };
@@ -90,9 +90,9 @@ export function Navbar() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => handleNavClick('admin-login')}
+              onClick={() => handleNavClick('login')}
             >
-              Admin Login
+              Login
             </Button>
           </div>
 
@@ -124,10 +124,10 @@ export function Navbar() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => handleNavClick('admin-login')}
+              onClick={() => handleNavClick('login')}
               className="w-full"
             >
-              Admin Login
+              Login
             </Button>
           </div>
         </div>

@@ -3,10 +3,11 @@ import { Navbar } from './components/Navbar';
 import { HomePage } from './pages/HomePage';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { PaymentPage } from './pages/PaymentPage';
-import { AdminLoginPage } from './pages/AdminLoginPage';
+import { LoginPage } from './pages/LoginPage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { SimplePage } from './pages/SimplePage';
 import { useEffect } from 'react';
+import { JudgeDashboard } from './pages/JudgeDashboard';
 
 function AppContent() {
   const { currentPage } = useApp();
@@ -82,10 +83,10 @@ Participants may be disqualified for:
           />
         );
       case 'faq':
-  return (
-    <SimplePage
-      title="Frequently Asked Questions"
-      content={`Participation
+        return (
+          <SimplePage
+            title="Frequently Asked Questions"
+            content={`Participation
 
 Q: Can I register more than once?
 A: No. Each participant can register only once using a single mobile number.
@@ -139,8 +140,8 @@ A: No. KKC Talent Show is an independent musical talent competition and is not a
 For further queries:
 Email: sangeetsevasahara@gmail.com
 Phone: +91 99265 61316`}
-    />
-  );
+          />
+        );
       case 'contact':
         return (
           <SimplePage
@@ -174,10 +175,12 @@ Follow us on social media for latest updates and announcements about KKC Talent 
         );
       case 'payment':
         return <PaymentPage />;
-      case 'admin-login':
-        return <AdminLoginPage />;
+      case 'login':
+        return <LoginPage />;
       case 'admin-dashboard':
         return <AdminDashboard />;
+      case 'judge-dashboard':
+        return <JudgeDashboard />;
       default:
         return <HomePage />;
     }

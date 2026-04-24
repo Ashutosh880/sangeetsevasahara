@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-type PageType = 'home' | 'about' | 'auditions' | 'rules' | 'faq' | 'contact' | 'payment' | 'admin-login' | 'admin-dashboard' | 'form-management';
+type PageType = 'home' | 'about' | 'auditions' | 'rules' | 'faq' | 'contact' | 'payment' | 'login' | 'admin-dashboard' | 'form-management' | 'judge-dashboard';;
 
 interface RegistrationFormData {
   full_name: string;
@@ -65,8 +65,8 @@ const pathToPage = (path: string): PageType => {
       return 'contact';
     case '/payment':
       return 'payment';
-    case '/admin-login':
-      return 'admin-login';
+    case '/login':
+      return 'login';
     case '/admin-dashboard':
       return 'admin-dashboard';
     case '/form-management':
@@ -92,12 +92,14 @@ const pageToPath = (page: PageType): string => {
       return `${BASE_PATH}/contact`;
     case 'payment':
       return `${BASE_PATH}/payment`;
-    case 'admin-login':
-      return `${BASE_PATH}/admin-login`;
+    case 'login':
+      return `${BASE_PATH}/login`;
     case 'admin-dashboard':
       return `${BASE_PATH}/admin-dashboard`;
     case 'form-management':
       return `${BASE_PATH}/form-management`;
+    case 'judge-dashboard':
+      return `${BASE_PATH}/judge-dashboard`;
     default:
       return `${BASE_PATH}/`;
   }
