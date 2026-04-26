@@ -3199,7 +3199,6 @@ export function RegistrationPage() {
                   </div>
                 )}
               </div>
-
               <Button type="submit" size="lg" className="w-full" isLoading={loading}>
                 {getButtonText()}
               </Button>

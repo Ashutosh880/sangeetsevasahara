@@ -166,7 +166,6 @@ export function UserDetailModal({
               {(registration.youtube_link_1 || registration.youtube_link_2) && (
                 <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 border border-gray-700">
                   <div className="flex items-center gap-3 mb-4">
-                    <Video className="text-red-500" size={24} />
                     <h3 className="text-xl font-bold text-white">YouTube Links</h3>
                   </div>
                   <div className="space-y-3">
@@ -234,9 +233,8 @@ export function UserDetailModal({
                         <XCircle className="text-yellow-500" size={20} />
                       )}
                       <p
-                        className={`font-bold text-lg ${
-                          isPaid ? 'text-green-500' : 'text-yellow-500'
-                        }`}
+                        className={`font-bold text-lg ${isPaid ? 'text-green-500' : 'text-yellow-500'
+                          }`}
                       >
                         {isPaid ? 'PAID' : 'UNPAID'}
                       </p>

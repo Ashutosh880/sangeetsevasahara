@@ -127,44 +127,47 @@ export function LoginPage() {
     setLoading(true);
 
     try {
-  const result: any = await login(username, password); // single API
+      const result: any = await login(username, password, role); // single API
 
-  if (result?.success) {
-    const user = result.user;
+      if (result?.success) {
+        const user = result.user;
 
-    if (user.role === 'admin') {
-      setIsAdmin(true);
-      showToast('Login successful', 'success');
-      setTimeout(() => setCurrentPage('admin-dashboard'), 800);
+        if (result?.success && result?.user) {
+          const user = result.user;
 
-    } else if (user.role === 'judge') {
-      sessionStorage.setItem(
-        'judge_session',
-        JSON.stringify({
-          id: user.id,
-          username: user.username,
-          role: user.role,
-        })
-      );
+          if (user.role === 'admin') {
+            setIsAdmin(true);
+            showToast('Login successful', 'success');
+            setTimeout(() => setCurrentPage('admin-dashboard'), 800);
 
-      showToast(`Welcome, ${user.username}`, 'success');
-      setTimeout(() => setCurrentPage('judge-dashboard'), 800);
+          } else if (user.role === 'judge') {
+            sessionStorage.setItem(
+              'judge_session',
+              JSON.stringify(user)
+            );
 
-    } else {
-      showToast('Unauthorized role', 'error');
+            showToast(`Welcome, ${user.username}`, 'success');
+            setTimeout(() => setCurrentPage('judge-dashboard'), 800);
+
+          } else {
+            showToast('Unauthorized role', 'error');
+          }
+
+        } else {
+          showToast(result?.message || 'Invalid username or password', 'error');
+        }
+
+      } else {
+        showToast(result?.message || 'Invalid username or password', 'error');
+      }
+
+    } catch (error) {
+      console.error('Login error:', error);
+      showToast('Login failed. Please try again.', 'error');
+    } finally {
+      setLoading(false);
     }
-
-  } else {
-    showToast(result?.message || 'Invalid username or password', 'error');
   }
-
-} catch (error) {
-  console.error('Login error:', error);
-  showToast('Login failed. Please try again.', 'error');
-} finally {
-  setLoading(false);
-}
-
   const handleRoleChange = (newRole: LoginRole) => {
     setRole(newRole);
     setUsername('');
@@ -196,11 +199,10 @@ export function LoginPage() {
             <p className="text-sm font-medium text-gray-400 mb-3">Login as</p>
             <div className="grid grid-cols-2 gap-3">
               <label
-                className={`relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                  role === 'admin'
-                    ? 'border-amber-500 bg-amber-500/10'
-                    : 'border-gray-700 bg-gray-800/50 hover:border-gray-600'
-                }`}
+                className={`relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${role === 'admin'
+                  ? 'border-amber-500 bg-amber-500/10'
+                  : 'border-gray-700 bg-gray-800/50 hover:border-gray-600'
+                  }`}
               >
                 <input
                   type="radio"
@@ -210,28 +212,25 @@ export function LoginPage() {
                   onChange={() => handleRoleChange('admin')}
                   className="sr-only"
                 />
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  role === 'admin' ? 'bg-amber-500/20' : 'bg-gray-700/50'
-                }`}>
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${role === 'admin' ? 'bg-amber-500/20' : 'bg-gray-700/50'
+                  }`}>
                   <Shield size={20} className={role === 'admin' ? 'text-amber-500' : 'text-gray-400'} />
                 </div>
                 <div>
                   <p className={`font-semibold text-sm ${role === 'admin' ? 'text-white' : 'text-gray-300'}`}>Admin</p>
                   <p className="text-xs text-gray-500">Manage platform</p>
                 </div>
-                <div className={`absolute top-3 right-3 w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  role === 'admin' ? 'border-amber-500' : 'border-gray-600'
-                }`}>
+                <div className={`absolute top-3 right-3 w-4 h-4 rounded-full border-2 flex items-center justify-center ${role === 'admin' ? 'border-amber-500' : 'border-gray-600'
+                  }`}>
                   {role === 'admin' && <div className="w-2 h-2 rounded-full bg-amber-500" />}
                 </div>
               </label>
 
               <label
-                className={`relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                  role === 'judge'
-                    ? 'border-amber-500 bg-amber-500/10'
-                    : 'border-gray-700 bg-gray-800/50 hover:border-gray-600'
-                }`}
+                className={`relative flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${role === 'judge'
+                  ? 'border-amber-500 bg-amber-500/10'
+                  : 'border-gray-700 bg-gray-800/50 hover:border-gray-600'
+                  }`}
               >
                 <input
                   type="radio"
@@ -241,18 +240,16 @@ export function LoginPage() {
                   onChange={() => handleRoleChange('judge')}
                   className="sr-only"
                 />
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  role === 'judge' ? 'bg-amber-500/20' : 'bg-gray-700/50'
-                }`}>
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${role === 'judge' ? 'bg-amber-500/20' : 'bg-gray-700/50'
+                  }`}>
                   <Scale size={20} className={role === 'judge' ? 'text-amber-500' : 'text-gray-400'} />
                 </div>
                 <div>
                   <p className={`font-semibold text-sm ${role === 'judge' ? 'text-white' : 'text-gray-300'}`}>Judge</p>
                   <p className="text-xs text-gray-500">Score performers</p>
                 </div>
-                <div className={`absolute top-3 right-3 w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                  role === 'judge' ? 'border-amber-500' : 'border-gray-600'
-                }`}>
+                <div className={`absolute top-3 right-3 w-4 h-4 rounded-full border-2 flex items-center justify-center ${role === 'judge' ? 'border-amber-500' : 'border-gray-600'
+                  }`}>
                   {role === 'judge' && <div className="w-2 h-2 rounded-full bg-amber-500" />}
                 </div>
               </label>
@@ -303,5 +300,4 @@ export function LoginPage() {
       </div>
     </div>
   );
-}
 }

@@ -89,14 +89,14 @@ export const adjustSlot = async (
 };
 
 // ---------------- ADMIN LOGIN ----------------
-export const loginUser = async (username: string, password: string) => {
+export const login = async (username: string, password: string, role: string) => {
   try {
     const res = await fetch(API_BASE + "login.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, password, role }),
     });
 
     if (!res.ok) {
@@ -599,7 +599,7 @@ export const loginJudge = async (username: string, password: string) => {
   return res.json();
 };
 
-export const searchCandidates = async (query: string, judge_id: string) => {
+export const searchCandidates = async (query: string, judge_id: string) => {   
   const res = await fetch(API_BASE + `judge/search-candidates.php?query=${encodeURIComponent(query)}&judge_id=${judge_id}`);
   return res.json();
 };
